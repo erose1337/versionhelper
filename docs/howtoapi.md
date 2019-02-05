@@ -95,7 +95,7 @@ A description of the contents:
 - `LANGUAGE` is the language the project is written in
 - `PROJECT` is the name of the project.
 
-So far, it should be pretty self explanatory; The only detail you need to remember is to put quotes around the values that you define for these.
+So far, it should be pretty self explanatory; The only detail you need to remember is to put quotes around the values that you define for these. If your project happened to be written in multiple languages you can specify them in a tuple.
 
 Next up is the important part: Documentation for the API.
 
@@ -113,7 +113,7 @@ This requirement is observable in the `arguments` entry for the `manipulate_file
 
 We can see that non-applicable entries can simply be labeled None, or they can be omitted completely.
 
-Another feature can be seen in the arguments for `manipulate_filenames`: Argument types can be descriptive, and are not limited to only strict literal types. Instead of saying `"list"`, or even `"list of str"`, it specifies that it takes a `"list of filename str"`, which indicates what the entries of the list are actually expected to be. 
+Another feature can be seen in the arguments for `manipulate_filenames`: Argument types can be descriptive, and are not limited to only strict literal types. Instead of saying `"list"`, or even `"list of str"`, it specifies that it takes a `"list of filename str"`, which indicates what the entries of the list are actually expected to be.
 
 The third entry, `"apidemo.lib.update_storage"` indicates that it takes an arbitrary number of arguments and keyword arguments. It also lists side effects that calling the function has; If a function manipulates state that other code may access, these are referred to as "side effects", and it is best to document them.
 

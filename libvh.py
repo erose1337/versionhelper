@@ -80,7 +80,7 @@ def version_helper(api_filename, directory='', version='', prerelease='', build_
 
     project_name = api_info.PROJECT
     db = API_Database(database_name=db or DATABASE)
-    old_digest, old_api, db_entry = _obtain_old_api_info(db, project_name, dry_run, api_info)
+    old_digest, old_api, db_entry = _obtain_old_api_info(db, project_name, dry_run, api_info, digest, serialized_api)
 
     if dry_run:
         _file = StringIO.StringIO()
@@ -146,7 +146,7 @@ def _update_version(digest, old_digest, version, prerelease, build_metadata, db,
             if not silent:
                 print(message)
 
-def _obtain_old_api_info(db, project_name, dry_run, api_info):
+def _obtain_old_api_info(db, project_name, dry_run, api_info, digest, serialized_api):
     db_entry = db.query("Api_Info", retrieve_fields=("digest", "api"),
                                     where={"project" : project_name})
     if not db_entry:
