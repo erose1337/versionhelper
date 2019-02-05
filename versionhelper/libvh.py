@@ -21,7 +21,6 @@ class Unspecified_Source_Types(Exception):
 
 SOURCE_TYPE = {"python" : ("py", ), "c" : ("c", )}
 ASCII_ALPHANUMERICS = set(string.ascii_letters + string.digits)
-DATABASE = os.path.join(os.path.split(__file__)[0], "api.db")
 
 def version_helper(api_filename, directory='', version='', prerelease='', build_metadata='',
                    db='', checker='', source_types=tuple(), no_invariant_check=False,
@@ -79,6 +78,8 @@ def version_helper(api_filename, directory='', version='', prerelease='', build_
     digest = _obtain_package_digest(directory, serialized_api, source_types)
 
     project_name = api_info.PROJECT
+    if not db:
+        db = os.path.join(os.path.split(api_filename)[0] or os.path.curdir, "api.db")
     db = API_Database(database_name=db or DATABASE)
     old_digest, old_api, db_entry = _obtain_old_api_info(db, project_name, dry_run, api_info, digest, serialized_api)
 
@@ -257,7 +258,7 @@ def _increment_version(change_type, current_version, silent, _file):
                 checked.append(str(int(item) + 1))
                 break
         else:
-            checked.append('0')
+            checked.append('1')
         prerelease = '.'.join(checked)
     elif change_type == "major":
         if major != '0':

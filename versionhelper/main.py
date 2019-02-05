@@ -1,10 +1,6 @@
 import argparse
 import sys
 
-# hack that disables prides Alert_Handler from appearing in --help
-sys.argv.insert(1, "--site_config")
-sys.argv.insert(2, "Alert_Handler.defaults={\'parse_args\':False}")
-
 import libvh
 
 PARSER = argparse.ArgumentParser()
@@ -21,6 +17,9 @@ PARSER.add_argument("-dry", "--dry_run", help="Perform a dry run; Does not write
 PARSER.add_argument("-s", "--silent", help="Do not display any information to stdout", action="store_true")
 
 def main():
+    if "--site_config" in sys.argv:
+        sys.argv.remove("--site_config")
+        sys.argv.remove("Alert_Handler.defaults={\'parse_args\':False}")
     args = PARSER.parse_args()
     libvh.version_helper(args.api, args.directory, args.version,
                          args.prerelease, args.build_metadata,
@@ -28,4 +27,10 @@ def main():
                          args.no_invariant_check, args.dry_run, args.silent)
 
 if __name__ == "__main__":
+    if "-m" in sys.argv:
+        sys.argv.remote("-m")
+    # disables the pride Alert_Handler from displaying when --help is used
+    #if "--site_config" not in sys.argv:
+    sys.argv.insert(1, "--site_config")
+    sys.argv.insert(2, "Alert_Handler.defaults={\'parse_args\':False}")
     main()
