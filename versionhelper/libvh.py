@@ -19,6 +19,10 @@ class Mismatched_Api_Argument(Exception):
 class Unspecified_Source_Types(Exception):
     """ Raised when no source types are specified and they cannot be introspected. """
 
+class Missing_Api_Info(Exception):
+    """ Raised when the VERSION, PROJECT attributes are not present in the api file. """
+
+
 SOURCE_TYPE = {"python" : ("py", ), "c" : ("c", )}
 ASCII_ALPHANUMERICS = set(string.ascii_letters + string.digits)
 
@@ -68,8 +72,17 @@ def version_helper(api_filename, directory='', version='', prerelease='', build_
         print("Performing a dry run; Changes will not be written to DB or API file")
 
     api_info = _load_module_from_filename(api_filename, "api")
-    directory = directory if directory else (os.path.split(api_filename)[0] or os.curdir)
 
+    try:
+        project_name = api_info.PROJECT
+    except AttributeError:
+        raise Missing_Api_Info("Project name not found. PROJECT attribute not set in api file.")
+    try:
+        api_info.VERSION
+    except AttributeError:
+        raise Missing_Api_Info("Version number not found. VERSION attribute not set in api file.")
+
+    directory = directory if directory else (os.path.split(api_filename)[0] or os.curdir)
     _run_invariant_checker(api_info, no_invariant_check, silent, checker, directory)
 
     if not source_types:
@@ -77,7 +90,6 @@ def version_helper(api_filename, directory='', version='', prerelease='', build_
     serialized_api = serialize(api_info.API)
     digest = _obtain_package_digest(directory, serialized_api, source_types)
 
-    project_name = api_info.PROJECT
     if not db:
         db = os.path.join(os.path.split(api_filename)[0] or os.path.curdir, "api.db")
     db = API_Database(database_name=db or DATABASE)

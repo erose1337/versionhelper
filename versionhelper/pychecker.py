@@ -65,7 +65,7 @@ def check_api_item(function_name, values, source_dir):
     determine_consistency(function_name, values, function)
 
 def determine_consistency(function_name, values, function):
-    api_arguments = values.get("arguments", tuple())
+    api_arguments = values.get("arguments", None) or tuple()
     arg_spec = inspect.getargspec(function)
     try:
         spec_keywords = dict((key, value) for key, value in zip(arg_spec.args[::-1],

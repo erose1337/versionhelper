@@ -1,0 +1,4 @@
+Major: Following exceptions for libvh.version_helper were added:
+    Missing_Api_Info
+Change type: major
+Changed version from 1.0.0-beta.2 to 1.0.0-beta.3

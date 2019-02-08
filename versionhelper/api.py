@@ -1,4 +1,4 @@
-VERSION = "1.0.0-beta.2"
+VERSION = "1.0.0-beta.3"
 LANGUAGE = "python"
 PROJECT = "versionhelper"
 
@@ -15,7 +15,8 @@ API = {"libvh.version_helper" : {"arguments" : ("filename str", ),
                                                "silent" : "bool"},
                                  "returns" : None,
                                  "exceptions" : ("ValueError", "Missing_Api_Function",
-                                                 "Mismatched_Api_Argument"),
+                                                 "Mismatched_Api_Argument",
+                                                 "Missing_Api_Info"),
                                  "side_effects" : ("Modifies api VERSION",
                                                    "Modifies database",
                                                    "Overwrites apichangelog.txt")},

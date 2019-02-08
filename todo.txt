@@ -1,11 +1,14 @@
 to do:
 ----
 program to generate Official API documentation page?
+compiled variant
 
 
 changes
 -----
-
+fixed bug in pychecker for functions with no positional arguments
+added Missing_Api_Info exception
+raises Missing_Api_Info when VERSION or PROJECT are not specified
 
 notes
 ----
