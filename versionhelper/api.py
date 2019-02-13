@@ -1,4 +1,4 @@
-VERSION = "1.0.0-beta.3"
+VERSION = "1.0.0-beta.7"
 LANGUAGE = "python"
 PROJECT = "versionhelper"
 

@@ -3,6 +3,7 @@ import os
 import inspect
 import imp
 import importlib
+import threading
 
 import libvh
 
@@ -26,7 +27,17 @@ class Local_Importer(object):
             return self
 
     def load_module(self, module_name):
+        thread_count = threading.active_count()
+        if thread_count != 1 :
+            while imp.lock_held():
+                pass
+            imp.acquire_lock()
+
         module = sys.modules.setdefault(module_name, imp.new_module(module_name))
+
+        if thread_count != 1:
+            imp.release_lock() # not sure when to release; the following doesn't use shared resources (e.g. sys.modules) other than the module itself
+            
         source, filepath = self.source.pop(module_name)
         module_code = compile(source, module_name, "exec")
         is_package = True if len(module_name.split('.')) > 1 else False # not sure, but seems accurate
@@ -38,12 +49,14 @@ class Local_Importer(object):
         else:
             module.__package__ = module_name.split('.', 1)[0]
         exec module_code in module.__dict__
+        #imp.release_lock() # it might be more correct to release the lock here instead of above.
         return module
 
 
 def check_api_item(function_name, values, source_dir):
     importer = Local_Importer(source_dir)
     try: # works if it is installed
+        assert importer not in sys.meta_path
         function = pride.functions.utilities.resolve_string(function_name)
     except (AttributeError, ValueError): # look in source_dir instead
         sys.meta_path.insert(0, importer)
