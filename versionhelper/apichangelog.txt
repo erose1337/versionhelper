@@ -1,1 +1,1 @@
-No changes. Version number: 1.0.0-beta.4
+No changes. Version number: 1.0.0-beta.7

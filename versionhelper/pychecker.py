@@ -37,7 +37,7 @@ class Local_Importer(object):
 
         if thread_count != 1:
             imp.release_lock() # not sure when to release; the following doesn't use shared resources (e.g. sys.modules) other than the module itself
-            
+
         source, filepath = self.source.pop(module_name)
         module_code = compile(source, module_name, "exec")
         is_package = True if len(module_name.split('.')) > 1 else False # not sure, but seems accurate
@@ -79,7 +79,11 @@ def check_api_item(function_name, values, source_dir):
 
 def determine_consistency(function_name, values, function):
     api_arguments = values.get("arguments", None) or tuple()
-    arg_spec = inspect.getargspec(function)
+    try:
+        arg_spec = inspect.getargspec(function)
+    except TypeError: # 'function' may be a class
+        arg_spec = inspect.getargspec(function.__init__)
+
     try:
         spec_keywords = dict((key, value) for key, value in zip(arg_spec.args[::-1],
                                                                 arg_spec.defaults[::-1]))
@@ -90,6 +94,8 @@ def determine_consistency(function_name, values, function):
 
     keyword_count = len(spec_keywords)
     spec_positionals = arg_spec.args[:len(arg_spec.args) - keyword_count]
+    if spec_positionals[0] == "self":
+        del spec_positionals[0]
     if arg_spec.varargs:
         spec_positionals.append("*" + arg_spec.varargs)
 
