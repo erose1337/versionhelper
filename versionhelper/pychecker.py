@@ -94,7 +94,7 @@ def determine_consistency(function_name, values, function):
 
     keyword_count = len(spec_keywords)
     spec_positionals = arg_spec.args[:len(arg_spec.args) - keyword_count]
-    if spec_positionals[0] == "self":
+    if spec_positionals and spec_positionals[0] == "self":
         del spec_positionals[0]
     if arg_spec.varargs:
         spec_positionals.append("*" + arg_spec.varargs)
