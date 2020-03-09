@@ -119,7 +119,7 @@ def _update_version(digest, old_digest, version, prerelease, build_metadata, db,
                 print(message)
         elif not db_entry: # first run, don't increment version
             new_version = _attach_metadata(api_info.VERSION, prerelease, build_metadata)
-            message = "First run, version is set to {}".format(api_info.version)
+            message = "First run, version is set to {}".format(api_info.VERSION)
             _file.write(message + "\n")
             if not silent:
                 print(message)
