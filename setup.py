@@ -1,9 +1,6 @@
 from setuptools import setup
 
-import versionhelper.api
-
 options = {"name" : "versionhelper",
-           "version" : versionhelper.api.VERSION,
            "description" : "Automatically increment semantic version number according to changes in the code and API",
            #"long_description" : '',
            #"url" : "",

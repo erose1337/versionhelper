@@ -1,2 +1,8 @@
-Change type: patch
-Changed version from 1.0.0-beta.8 to 1.0.0-beta.9
+Major: Following functions were removed:
+    libvh.parse_version
+libvh.version_helper
+Minor: Following functions were added:
+    versionhelper.libvh.version_helper, versionhelper.libvh.parse_version
+Change type: major
+Changed version from 1.0.0-beta.9 to 1.0.0-beta.10
+No changes. Version number: 1.0.0-beta.11
