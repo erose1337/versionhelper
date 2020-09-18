@@ -68,7 +68,11 @@ def check_api_item(function_name, values, source_dir):
             except ImportError:
                 continue
             else:
-                function = getattr(module, '.'.join(segments[index:]))
+                try:
+                    function = getattr(module, '.'.join(segments[index:]))
+                except AttributeError:
+                    message = "{} does not exist".format(function_name)
+                    raise libvh.Missing_Api_Functionality(message)
                 sys.meta_path.remove(importer)
                 break
         else:
